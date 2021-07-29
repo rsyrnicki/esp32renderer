@@ -1,8 +1,8 @@
 import sys
 
 def main():
-    if len(sys.argv) > 0:
-        fileName = sys.argv[0]
+    if len(sys.argv) > 1:
+        fileName = sys.argv[1]
     else:
         print("Specify a filename (without .obj)")
         return
