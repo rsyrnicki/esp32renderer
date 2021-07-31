@@ -9,8 +9,10 @@ const float rotatingSpeed = 0.2;
 bool updated;
 bool wireframe;
 int s;                    // scaling factor
+float alphaAngle;         // yaw angle
 float betaAngle;          // pitch angle
-float gammaAngle;         // yaw angle
+float gammaAngle;         // roll angle
+int yOffset;
 
 // -------------------------------------------------------------------------
 // Setup
@@ -25,10 +27,12 @@ void setup(void) {
   tft.setRotation(0);
   tft.fillScreen(TFT_BLACK); 
   updated = false;
-  wireframe = true; // true for wireframe image, false for a solid model (not working yet)
-  s = 30;
+  wireframe = false; // true for wireframe image, false for a solid model (not working yet)
+  s = 100;
+  alphaAngle = PI;
   betaAngle = 0.0;
-  gammaAngle = -90.0;
+  gammaAngle = 0.0;
+  yOffset = tft.height() - 2;
 }
 
 // -------------------------------------------------------------------------
@@ -38,15 +42,15 @@ void loop()
 {
   
   if (!updated) {
-    float r11 = cos(betaAngle) * cos(gammaAngle);
-    float r12 = cos(betaAngle) * (-sin(gammaAngle));
-    float r13 = sin(betaAngle);
-    float r21 = sin(gammaAngle);
-    float r22 = cos(gammaAngle);
-    float r23 = 0;
-    float r31 = sin(betaAngle) * sin(gammaAngle);
-    float r32 = sin(betaAngle) * (-sin(gammaAngle));
-    float r33 = cos(betaAngle);
+    float r11 = cos(alphaAngle) * cos(betaAngle);
+    float r12 = cos(alphaAngle) * sin(betaAngle) * sin(gammaAngle) - sin(alphaAngle) * cos(gammaAngle);
+    float r13 = cos(alphaAngle) * sin(betaAngle) * cos(gammaAngle) + sin(alphaAngle) * sin(gammaAngle);
+    float r21 = sin(alphaAngle) * cos(betaAngle);
+    float r22 = sin(alphaAngle) * sin(betaAngle) * sin(gammaAngle) + cos(alphaAngle) * cos(gammaAngle);
+    float r23 = sin(alphaAngle) * sin(betaAngle) * cos(gammaAngle) - cos(alphaAngle) * sin(gammaAngle);
+    float r31 = -sin(betaAngle);
+    float r32 = cos(betaAngle) * sin(gammaAngle);
+    float r33 = cos(betaAngle) * cos(gammaAngle);
   
     const int rows = sizeof(vertices);
     float projectionMatrix[2][3] = {{r11*s, r12*s, r13*s}, {r21*s, r22*s, r23*s}};
@@ -61,6 +65,9 @@ void loop()
       int v1 = faces[i][0]-1;
       int v2 = faces[i][1]-1;
       int v3 = faces[i][2]-1;
+
+      //tft.setCursor(10, 140);
+      //tft.print(alphaAngle);
 
       if(!wireframe) {
         float dotProdukt =  (normals[normalsToFaces[i]-1][0]) * (0.0) + 
@@ -91,10 +98,16 @@ void loop()
   
  //delay(500);
  if(digitalRead(leftBtn) == LOW) {
+  // alphaAngle -= rotatingSpeed;
   betaAngle -= rotatingSpeed;
+  //gammaAngle -= rotatingSpeed;
+  
   updated = false;
  } else if (digitalRead(rightBtn) == LOW) {
+  //alphaAngle += rotatingSpeed;
   betaAngle += rotatingSpeed;
+  //gammaAngle += rotatingSpeed;
+  
   updated = false;
  }
 }
@@ -113,7 +126,7 @@ void project( float pMatrix[2][3], float vertices[][3] ) {
     int y =    round(pMatrix[1][0] * vertices[i][0]
                     + pMatrix[1][1] * vertices[i][1]
                     + pMatrix[1][2] * vertices[i][2]
-                    + tft.width()  / 2 - 1); //y
+                    + tft.height()  / 2 - 1); //y
      vertices2D[i][0] = x;
      vertices2D[i][1] = y;
   }
