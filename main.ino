@@ -26,8 +26,8 @@ void setup(void) {
   tft.init();
   tft.setRotation(0);
   tft.fillScreen(TFT_BLACK); 
-  updated = true;
-  wireframe = false; // true for wireframe image, false for a solid model (experimental)
+  updated = false;
+  wireframe = true; // true for wireframe image, false for a solid model (experimental)
   s = 120;
   alphaAngle = PI;
   betaAngle = 0.0;
