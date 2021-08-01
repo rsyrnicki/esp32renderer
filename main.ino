@@ -26,13 +26,21 @@ void setup(void) {
   tft.init();
   tft.setRotation(0);
   tft.fillScreen(TFT_BLACK); 
-  updated = false;
-  wireframe = false; // true for wireframe image, false for a solid model (not working yet)
-  s = 100;
+  updated = true;
+  wireframe = false; // true for wireframe image, false for a solid model (experimental)
+  s = 120;
   alphaAngle = PI;
   betaAngle = 0.0;
   gammaAngle = 0.0;
-  yOffset = tft.height() - 2;
+
+  // If the center of the model is 0, 0, 0
+  //yOffset = tft.height() / 2;
+  
+  // If the bottom of the model is 0, 0, 0
+  //yOffset = tft.height();
+  
+  // User-defiened yOffset
+  yOffset = 50;
 }
 
 // -------------------------------------------------------------------------
@@ -123,7 +131,7 @@ void project( float pMatrix[2][3], float vertices[][3] ) {
                     + pMatrix[0][1] * vertices[i][1]
                     + pMatrix[0][2] * vertices[i][2]
                     + tft.width()  / 2 - 1); //x   
-    int y =    round(pMatrix[1][0] * vertices[i][0]
+    int y =    round(yOffset + pMatrix[1][0] * vertices[i][0]
                     + pMatrix[1][1] * vertices[i][1]
                     + pMatrix[1][2] * vertices[i][2]
                     + tft.height()  / 2 - 1); //y
