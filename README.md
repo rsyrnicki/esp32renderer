@@ -2,8 +2,6 @@
 Display .obj 3D models on your microcontroller
 
 TODO: 
- - Implement backface culling 
- - Implement simple shading (set directional light)
  - Import materials
  
 What do you need?
@@ -17,7 +15,7 @@ How to?
  1. Clone the repository.
  2. Put your model into the root directory. Be sure to export as .obj and select triangulate in blender.
  3. Open the root directory in cmd or terminal
- 4. Type: "objToArduinoC.py {model_file_name_without_extention}" e.g. "objToArduinoC.py cube".
+ 4. Type: "python objToArduinoC.py {model_file_name_without_extention}" e.g. "python objToArduinoC.py cube".
  5. Open esp32renderer.ino with Arduino IDE.
  6. Connect the screen, your board and upload the sketch.
  7. Message me if you find any errors ;)
