@@ -1,6 +1,8 @@
 # esp32renderer
 Display .obj 3D models on your microcontroller
 
+See it working: [Link](https://www.reddit.com/r/arduino/comments/otwqn7/why_display_3d_models_on_a_microcontroller/?utm_source=share&utm_medium=web2x&context=3)
+
 TODO: 
  - Import materials
  
